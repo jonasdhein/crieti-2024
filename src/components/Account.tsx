@@ -12,10 +12,10 @@ export const Account = () => {
 
     return(
         <SafeAreaView style={styles.container}>
-            <Text>Meus Dados:</Text>
-            <Text>Nome: {user.name}</Text>
-            <Text>Idade: {user.age}</Text>
-            <Text>Cidade: {user.city}</Text>
+            <Text style={styles.title}>Meus Dados:</Text>
+            <Text style={styles.subtitle}>Nome: {user.name}</Text>
+            <Text style={styles.subtitle}>Idade: {user.age}</Text>
+            <Text style={styles.subtitle}>Cidade: {user.city}</Text>
             <TouchableOpacity
                 onPress={() => setUser({...user, age: user.age+1})}>
                 <Text>Fazer Aniversário!</Text>
@@ -26,6 +26,14 @@ export const Account = () => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    title: {
+        fontSize: 30
+    },
+    subtitle: {
+        fontSize: 20
     }
 })
