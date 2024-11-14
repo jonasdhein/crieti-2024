@@ -1,7 +1,10 @@
+import { useNavigation } from "@react-navigation/native";
 import { useState } from "react"
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity } from "react-native"
 
 export const Contador = () => {
+
+    const navigator = useNavigation();
 
     const [count, setCount] = useState<number>(0);
 
@@ -11,6 +14,13 @@ export const Contador = () => {
             <TouchableOpacity
                 onPress={() => setCount(count + 1)}>
                 <Text>INCREMENTAR</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+                onPress={() => {
+                    navigator.navigate("Account");
+                }}>
+                <Text>NAVEGAR PARA OUTRA TELA</Text>
             </TouchableOpacity>
         </SafeAreaView>
     )
