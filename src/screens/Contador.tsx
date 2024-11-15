@@ -4,21 +4,20 @@ import { SafeAreaView, StyleSheet, Text, TouchableOpacity } from "react-native"
 
 export const Contador = () => {
 
-    const navigator = useNavigation();
+    const navigation = useNavigation(); //cria a variável que permite a navegação
 
     const [count, setCount] = useState<number>(0);
 
     return (
         <SafeAreaView style={styles.container}>
             <Text>{count}</Text>
-            <TouchableOpacity
-                onPress={() => setCount(count + 1)}>
+            <TouchableOpacity onPress={() => setCount(count + 1)}>
                 <Text>INCREMENTAR</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
                 onPress={() => {
-                    navigator.navigate("Account");
+                    navigation.navigate("Account");
                 }}>
                 <Text>NAVEGAR PARA OUTRA TELA</Text>
             </TouchableOpacity>
