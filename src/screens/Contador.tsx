@@ -1,10 +1,11 @@
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react"
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity } from "react-native"
+import { colors } from "../themes/theme";
 
 export const Contador = () => {
 
-    const navigation = useNavigation(); //cria a variável que permite a navegação
+    const navigation = useNavigation<NavigationProps>(); //cria a variável que permite a navegação
 
     const [count, setCount] = useState<number>(0);
 
@@ -28,7 +29,7 @@ export const Contador = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: colors.background,
         alignItems: 'center',
         justifyContent: 'center',
     }

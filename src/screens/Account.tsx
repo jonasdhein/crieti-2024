@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity } from "react-native"
 import { IUser } from "../@types/user"
+import { theme } from "../themes/theme"
 
 export const Account = () => {
 
@@ -11,7 +12,7 @@ export const Account = () => {
     } as IUser)
 
     return(
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={theme.container}>
             <Text style={styles.title}>Meus Dados:</Text>
             <Text style={styles.subtitle}>Nome: {user.name}</Text>
             <Text style={styles.subtitle}>Idade: {user.age}</Text>
@@ -25,11 +26,6 @@ export const Account = () => {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
     title: {
         fontSize: 30
     },
