@@ -13,11 +13,15 @@ export const theme = StyleSheet.create({
         flex: 1,
         margin: 12
     },
+    center: {
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
     button: {
         backgroundColor: colors.blue,
-        padding: 12,
+        paddingHorizontal: 12,
+        paddingVertical: 8,
         borderRadius: 12,
-        width: '40%'
     },
     textButton: {
         fontSize: 20,
@@ -26,6 +30,9 @@ export const theme = StyleSheet.create({
     },
     marginBottom: {
         marginBottom: 12
+    },
+    marginTop: {
+        marginTop: 12
     },
     input: {
         backgroundColor: colors.backgroundInut,
@@ -41,7 +48,7 @@ export const theme = StyleSheet.create({
         marginVertical: 8
     },
     listItem: {
-        fontSize: 16,
+        fontSize: 55,
         marginBottom: 8
     }
 });

@@ -12,14 +12,15 @@ export const Account = () => {
     } as IUser)
 
     return(
-        <SafeAreaView style={theme.container}>
+        <SafeAreaView style={[theme.container, theme.center]}>
             <Text style={styles.title}>Meus Dados:</Text>
             <Text style={styles.subtitle}>Nome: {user.name}</Text>
             <Text style={styles.subtitle}>Idade: {user.age}</Text>
             <Text style={styles.subtitle}>Cidade: {user.city}</Text>
             <TouchableOpacity
+                style={[theme.button, theme.marginTop]}
                 onPress={() => setUser({...user, age: user.age+1})}>
-                <Text>Fazer Aniversário!</Text>
+                <Text style={theme.textButton}>Fazer Aniversário!</Text>
             </TouchableOpacity>
         </SafeAreaView>
     )
