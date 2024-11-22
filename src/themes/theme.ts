@@ -48,7 +48,7 @@ export const theme = StyleSheet.create({
         marginVertical: 8
     },
     listItem: {
-        fontSize: 55,
+        fontSize: 24,
         marginBottom: 8
     }
 });

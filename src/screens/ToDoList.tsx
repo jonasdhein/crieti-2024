@@ -1,22 +1,27 @@
-import { SafeAreaView, ScrollView, Text, TextInput, View } from "react-native"
+import { FlatList, Platform, SafeAreaView, ScrollView, Text, TextInput, View } from "react-native"
 import { theme } from "../themes/theme";
 import { useEffect, useState } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ITask } from "../@types/task";
 
 export const ToDoList = () => {
 
     const [input, setInput] = useState<string>('');
-    const [todoList, setTodoList] = useState<string[]>([]);
+    const [todoList, setTodoList] = useState<ITask[]>([]);
 
-    const save = (text : string) => {
+    const save = (text: string) => {
 
-        const newList = [...todoList, text];
+        const newList = [...todoList, 
+            {
+                title: text
+            }
+        ];
 
         setTodoList(newList);
         storeData(newList);
     }
 
-    const storeData = async (value: string[]) => {
+    const storeData = async (value: ITask[]) => {
         try {
             const jsonValue = JSON.stringify(value);
             await AsyncStorage.setItem('todo_list', jsonValue);
@@ -26,14 +31,15 @@ export const ToDoList = () => {
         }
     };
 
-    const getData = async (): Promise<string[]> => {
+    const getData = async (): Promise<ITask[]> => {
         try {
+
             const jsonValue = await AsyncStorage.getItem('todo_list');
 
             if (jsonValue != null) {
                 const parsed = JSON.parse(jsonValue);
                 return parsed;
-            }else{
+            } else {
                 return [];
             }
 
@@ -44,7 +50,7 @@ export const ToDoList = () => {
     };
 
     useEffect(() => {
-        
+
         const fetchData = async () => {
             const fetch = await getData();
             setTodoList(fetch);
@@ -59,6 +65,12 @@ export const ToDoList = () => {
         que a tela for renderizada
     */
 
+    const Item = ({ title }: ITask) => (
+        <View>
+            <Text style={theme.listItem}>{title}</Text>
+        </View>
+    );
+
     return (
         <SafeAreaView style={theme.container}>
             <TextInput
@@ -72,16 +84,12 @@ export const ToDoList = () => {
             />
 
             <Text style={theme.label}>Lista de Tarefas:</Text>
-            <ScrollView
-                showsVerticalScrollIndicator={false}>
-                {
-                    todoList.map((tarefa, index) => (
-                        <Text
-                            style={theme.listItem}
-                            key={index}>- {tarefa}</Text>
-                    ))
-                }
-            </ScrollView>
+
+            <FlatList
+                data={todoList}
+                renderItem={({ item }) => <Item title={item.title} />}
+                keyExtractor={item => item.title}
+            />
         </SafeAreaView>
     )
 }
