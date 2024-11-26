@@ -1,8 +1,9 @@
-import { FlatList, Platform, SafeAreaView, ScrollView, Text, TextInput, View } from "react-native"
-import { theme } from "../themes/theme";
+import { Alert, FlatList, Platform, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native"
+import { colors, theme } from "../themes/theme";
 import { useEffect, useState } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ITask } from "../@types/task";
+import { ITask } from "../@types";
+import { Icon } from "../components/Icon";
 
 export const ToDoList = () => {
 
@@ -11,10 +12,12 @@ export const ToDoList = () => {
 
     const save = (text: string) => {
 
-        const newList = [...todoList, 
-            {
-                title: text
-            }
+        const newList = [...todoList,
+        {
+            id: todoList.length + 1,
+            checked: false,
+            title: text
+        }
         ];
 
         setTodoList(newList);
@@ -49,6 +52,50 @@ export const ToDoList = () => {
         }
     };
 
+    const removeItem = (id: number) => {
+        try {
+            Alert.alert('Remover Item', 'Tem certeza disso?', [
+                {
+                    text: 'Cancelar',
+                    onPress: () => {
+                        console.log('Operação cancelada');
+                    }
+                },
+                {
+                    text: 'Sim',
+                    onPress: () => {
+
+                        const newList = todoList.filter(item => item.id != id);
+
+                        setTodoList(newList);
+                        storeData(newList);
+                    }
+                }
+            ])
+        } catch (err) {
+            console.log("🚀 ~ removeItem ~ err:", err)
+        }
+    }
+
+    const updateItem = (id: number) => {
+        try {
+
+            const newList = todoList.map(item =>
+                (item.id === id) ? {
+                    ...item,
+                    checked: !item.checked
+                } :
+                    { ...item }
+            )
+
+            setTodoList(newList);
+            storeData(newList);
+
+        } catch (err) {
+            console.log("🚀 ~ updateItem ~ err:", err)
+        }
+    }
+
     useEffect(() => {
 
         const fetchData = async () => {
@@ -65,9 +112,20 @@ export const ToDoList = () => {
         que a tela for renderizada
     */
 
-    const Item = ({ title }: ITask) => (
-        <View>
-            <Text style={theme.listItem}>{title}</Text>
+    const Item = ({ id, checked, title }: ITask) => (
+        <View style={styles.item}>
+            <View style={styles.itemTitle}>
+                <TouchableOpacity
+                    style={styles.checked}
+                    onPress={() => updateItem(id)}>
+                    <Icon name={checked ? 'check-square' : 'square'} size={22} />
+                </TouchableOpacity>
+                <Text style={checked ? styles.titleChecked : styles.title}>{title}</Text>
+            </View>
+            <TouchableOpacity
+                onPress={() => removeItem(id)}>
+                <Icon name='trash' size={18} color={colors.red} />
+            </TouchableOpacity>
         </View>
     );
 
@@ -76,6 +134,7 @@ export const ToDoList = () => {
             <TextInput
                 style={theme.input}
                 onChangeText={(value) => setInput(value)}
+                placeholder="Digite o nome da tarefa"
                 value={input}
                 onSubmitEditing={() => {
                     save(input);
@@ -87,9 +146,40 @@ export const ToDoList = () => {
 
             <FlatList
                 data={todoList}
-                renderItem={({ item }) => <Item title={item.title} />}
-                keyExtractor={item => item.title}
+                renderItem={({ item }) =>
+                    <Item id={item.id} checked={item.checked} title={item.title} />
+                }
+                keyExtractor={item => item.id.toString()}
             />
+
         </SafeAreaView>
     )
 }
+
+const styles = StyleSheet.create({
+    item: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 16,
+        borderBottomWidth: 1,
+        borderColor: colors.placeHolder
+    },
+    itemTitle: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    checked: {
+        paddingRight: 8
+    },
+    title: {
+        fontSize: 18,
+        color: colors.black,
+    },
+    titleChecked: {
+        fontSize: 18,
+        opacity: 0.4,
+        textDecorationLine: 'line-through',
+    }
+});

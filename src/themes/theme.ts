@@ -2,10 +2,14 @@ import { StyleSheet } from "react-native";
 
 export const colors = {
     background: '#CFD8DC',
-    backgroundInut: '#FFF3E0',
+    backgroundInut: '#FAFAFA',
     blue: '#2196F3',
     orange: '#FF9800',
-    white: '#FFFFFF'
+    grey: '#E0E0E0',
+    red: '#F44336',
+    placeHolder: '#90A4AE',
+    white: '#FFFFFF',
+    black: '#000'
 };
 
 export const theme = StyleSheet.create({
@@ -39,7 +43,7 @@ export const theme = StyleSheet.create({
         fontSize: 16,
         padding: 12,
         borderWidth: 0.5,
-        borderColor: colors.orange,
+        borderColor: colors.grey,
         borderRadius: 8
     },
     label: {
@@ -48,7 +52,6 @@ export const theme = StyleSheet.create({
         marginVertical: 8
     },
     listItem: {
-        fontSize: 24,
-        marginBottom: 8
+        fontSize: 20,
     }
 });
