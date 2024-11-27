@@ -1,12 +1,14 @@
 import { Alert, FlatList, Platform, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native"
 import { colors, theme } from "../themes/theme";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ITask } from "../@types";
 import { Icon } from "../components/Icon";
+import { Modalize } from "react-native-modalize";
 
 export const ToDoList = () => {
 
+    const modalizeRef = useRef<Modalize>(null);
     const [input, setInput] = useState<string>('');
     const [todoList, setTodoList] = useState<ITask[]>([]);
 
@@ -120,7 +122,10 @@ export const ToDoList = () => {
                     onPress={() => updateItem(id)}>
                     <Icon name={checked ? 'check-square' : 'square'} size={22} />
                 </TouchableOpacity>
-                <Text style={checked ? styles.titleChecked : styles.title}>{title}</Text>
+                <TouchableOpacity
+                    onPress={() => modalizeRef.current?.open()}>
+                    <Text style={checked ? styles.titleChecked : styles.title}>{title}</Text>
+                </TouchableOpacity>
             </View>
             <TouchableOpacity
                 onPress={() => removeItem(id)}>
@@ -152,6 +157,12 @@ export const ToDoList = () => {
                 keyExtractor={item => item.id.toString()}
             />
 
+            <Modalize
+                ref={modalizeRef}
+                modalHeight={400}>
+                <Text>Detalhes da tarefa</Text>
+            </Modalize>
+
         </SafeAreaView>
     )
 }
@@ -167,6 +178,7 @@ const styles = StyleSheet.create({
         borderColor: colors.placeHolder
     },
     itemTitle: {
+        flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
     },
@@ -174,10 +186,12 @@ const styles = StyleSheet.create({
         paddingRight: 8
     },
     title: {
+        flex: 1,
         fontSize: 18,
         color: colors.black,
     },
     titleChecked: {
+        flex: 1,
         fontSize: 18,
         opacity: 0.4,
         textDecorationLine: 'line-through',

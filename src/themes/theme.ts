@@ -15,7 +15,7 @@ export const colors = {
 export const theme = StyleSheet.create({
     container: {
         flex: 1,
-        margin: 12
+        padding: 12
     },
     center: {
         justifyContent: 'center',
@@ -44,7 +44,8 @@ export const theme = StyleSheet.create({
         padding: 12,
         borderWidth: 0.5,
         borderColor: colors.grey,
-        borderRadius: 8
+        borderRadius: 8,
+        width: 300
     },
     label: {
         fontSize: 20,
