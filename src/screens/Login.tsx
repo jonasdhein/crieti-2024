@@ -3,6 +3,10 @@ import { theme } from '../themes/theme';
 import { Icon } from '../components/Icon';
 import { useState } from 'react';
 import { ILogin } from '../@types';
+import axios from 'axios';
+import { ILoginRet } from '../@types/loginRet';
+
+axios.defaults.baseURL = 'https://dummyjson.com';
 
 export const Login = () => {
 
@@ -11,21 +15,28 @@ export const Login = () => {
         password: ''
     });
 
-    const doLogin = () => {
+    const doLogin = async () => {
         //validar os campos
-        if(login.username.length <= 0){
+        if (login.username.length <= 0) {
             Alert.alert('Atenção', 'Informe o nome de usuário');
             return;
         }
-        if(login.password.length <= 0){
+        if (login.password.length <= 0) {
             Alert.alert('Atenção', 'Informe a senha');
             return;
         }
 
         //realizar o login
+        const { data } = await axios
+        .post('/auth/login', login)
+        .catch(err => {
+            Alert.alert('Ops', 'Credenciais inválidas');
+        });
+       
+        console.log("🚀 ~ doLogin ~ USER:", data.id);
 
         //validar o retorno
-        
+
         // navigation.navigate('Home'); // Implementar a navegação para a tela principal
     }
 
