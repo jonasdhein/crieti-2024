@@ -28,14 +28,17 @@ export const Login = () => {
 
         //realizar o login
         const { data } = await axios
-        .post('/auth/login', login)
-        .catch(err => {
-            Alert.alert('Ops', 'Credenciais inválidas');
-        });
-       
-        console.log("🚀 ~ doLogin ~ USER:", data.id);
+            .post<ILoginRet>('/auth/login', login)
+            .catch(err => {
+                Alert.alert('Ops', 'Credenciais inválidas');
+                return { data: null } as { data: ILoginRet | null }; // Força a tipagam mesmo em caso de erro
+            });
 
         //validar o retorno
+        if (data) {
+            console.log('Token:', data.accessToken);
+            console.log('User ID:', data.id);
+        }
 
         // navigation.navigate('Home'); // Implementar a navegação para a tela principal
     }
