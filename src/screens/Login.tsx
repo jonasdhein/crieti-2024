@@ -2,14 +2,16 @@ import { Alert, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { theme } from '../themes/theme';
 import { Icon } from '../components/Icon';
 import { useState } from 'react';
-import { ILogin } from '../@types';
+import { ILogin, NavigationProps } from '../@types';
 import axios from 'axios';
 import { ILoginRet } from '../@types/loginRet';
+import { useNavigation } from '@react-navigation/native';
 
 axios.defaults.baseURL = 'https://dummyjson.com';
 
 export const Login = () => {
 
+    const navigation = useNavigation<NavigationProps>();
     const [login, setLogin] = useState<ILogin>({
         username: '',
         password: ''
@@ -38,9 +40,17 @@ export const Login = () => {
         if (data) {
             console.log('Token:', data.accessToken);
             console.log('User ID:', data.id);
+
+            //Resetar a navegação 
+            navigation.reset({
+                routes: [
+                    {
+                        name: 'Home'
+                    }
+                ], index: 0
+            });
         }
 
-        // navigation.navigate('Home'); // Implementar a navegação para a tela principal
     }
 
     return (
